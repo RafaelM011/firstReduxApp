@@ -15,7 +15,7 @@ const initialState = {
     return (maxId + 1);
   }
 
-  export default function appReducer(state = initialState, action) {
+  export default function todoReducer(state = initialState, action) {
     switch (action.type){
         case "todos/todoAdded": {
             return {
@@ -30,7 +30,27 @@ const initialState = {
                 ] 
             }
         }
-
+        case "todos/todoToggled": {
+          return {
+            ...state,
+            todos: state.todos.map(todo => {
+              if (todo.id !== action.payload) return todo
+              return {
+                ...todo,
+                completed: !todo.completed
+              }
+            })
+          }
+        }
+        case 'filters/statusFilterChanged': {
+          return {
+            ...state,
+            filters: {
+              ...state.filters,
+              status: action.payload
+            }
+          }
+        }
         default:
         
         return state;
